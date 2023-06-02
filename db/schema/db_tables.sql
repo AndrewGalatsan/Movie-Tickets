@@ -1,0 +1,50 @@
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS movie_showing CASCADE;
+DROP TABLE IF EXISTS movie_orders CASCADE;
+DROP TABLE IF EXISTS tickets CASCADE;
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  phone VARCHAR(255) NOT NULL
+  email VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE movie (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  year INTEGER NOT NULL,
+  thumbnail_url VARCHAR (255) NOT NULL,
+  description TEXT,
+  genre VARCHAR (255) NOT NULL
+)
+
+CREATE TABLE movie_showing (
+  id SERIAL PRIMARY KEY NOT NULL,
+  showtimes VARCHAR(255) NOT NULL,
+  tickets_available INTEGER NOT NULL,
+  movie_id INTEGER REFERENCES movie(id) ON DELETE CASCADE NOT NULL, -- movie is a created db
+);
+
+
+CREATE TABLE movie_orders (
+  id SERIAL PRIMARY KEY NOT NULL,
+  total_price INTEGER NOT NULL,
+  status BOOLEAN NOT NULL DEFAULT FALSE
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+  movie_showing_id INTEGER REFERENCES movie_showing(id) ON DELETE CASCADE NOT NULL,
+  );
+
+
+
+CREATE TABLE tickets (
+  id SERIAL PRIMARY KEY NOT NULL,
+  price INTEGER NOT NULL,
+  quantity INTEGER NOT NULL,
+  movie_orders_id INTEGER REFERENCES movie_orders(id) ON DELETE CASCADE,
+  movie_showing_id INTEGER REFERENCES movie_showing(id) ON DELETE CASCADE NOT NULL,
+);
+
+
+
+
